@@ -1,69 +1,54 @@
 # -----------------------------------------------------------------------
-# NEXUSSS ULTRA CI/CD - DEWA EDITION V2 (FIXED) 🚀
-# Level: VIP + Tingkat Dewa + Anti-Error
+# NEXUSSS VPS-SSH MODE - FULL STACK EDITION 🚀
+# Level: VIP + Tingkat Dewa + Dev Ready (PY & JS)
 # -----------------------------------------------------------------------
 
-name: ⚡ NEXUSSS ELITE CI
+name: ⚡ NEXUSSS DEWA VPS (PY/JS)
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+  workflow_dispatch: # Jalankan manual dari tab Actions
 
 jobs:
-  build-and-optimize:
-    name: 🛠️ Build & Security Mastery
+  nexus-vps:
+    name: 🖥️ Establishing High-End Environment
     runs-on: ubuntu-latest
     
-    permissions:
-      contents: read
-      packages: write
-
     steps:
-      - name: 📥 Checkout Source Code
+      - name: 📥 Checkout Repository
         uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python (Dewa Edition)
+        uses: actions/setup-python@v5
         with:
-          fetch-depth: 0
+          python-version: '3.12' # Versi stabil & kenceng
 
-      - name: 🔍 Initialize Nexusss Environment
-        run: |
-          echo "🚀 Memulai proses CI tingkat tinggi..."
-          echo "👤 Executor: ${{ github.actor }}"
-          echo "📂 Root Directory Content:"
-          ls -R # Biar kita bisa liat isi folder di log (Audit Dewa)
-
-      - name: ⚙️ Setup Node.js (High Speed)
+      - name: 🟢 Setup Node.js (VIP Speed)
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          # Caching dimatikan sementara jika package-lock belum ada untuk cegah error
-          # cache: 'npm' 
+          node-version: '24' # LTS Version untuk performa maksimal
 
-      - name: 📦 Smart Install Dependencies
-        id: install_step
+      - name: 🛠️ Pre-install Essential Tools
         run: |
-          if [ -f package.json ]; then
-            echo "✅ package.json ditemukan! Memulai instalasi..."
-            if [ -f package-lock.json ]; then
-              npm ci
-            else
-              echo "⚠️ package-lock.json tidak ada, menggunakan npm install..."
-              npm install
-            fi
-          else
-            echo "⏩ [SKIP] Ini bukan project Node.js atau package.json tidak di root."
-            echo "Status: SAFE MODE ENABLED"
-          fi
+          echo "📦 Menyiapkan alat tempur..."
+          sudo apt-get update
+          sudo apt-get install -y curl git wget build-essential
+          echo "✅ Python Version: $(python --version)"
+          echo "✅ Node.js Version: $(node -v)"
+          echo "✅ NPM Version: $(npm -v)"
 
-      - name: 🧪 VIP Analysis & Test
+      - name: 🚀 Launching SSH Tunnel (Tmate)
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 360 # Max limit 6 jam (Aturan GitHub)
+        with:
+          limit-access-to-actor: false # Bisa diakses siapa saja yang punya link
+
+      - name: 🏆 Final Status
         run: |
-          echo "🧪 Menjalankan analisis kode..."
-          if [ -f package.json ]; then
-            # Hanya jalankan test kalau ada script-nya
-            npm test || echo "⚠️ No test script found in package.json"
-          else
+          echo "========================================="
+          echo "✨ NEXUSSS FULL STACK VPS IS READY! ✨"
+          echo "Status: Python & JS Terinstal Sempurna."
+          echo "Cek link SSH/Web Shell di atas!"
+          echo "========================================="
             echo "✨ Melewati tahap testing (Non-Node Project)"
           fi
 
